@@ -35,15 +35,20 @@ def main():
              #create_row_data = {"Country": 'United States',  "Time": "2023-05-03","Balance": "example_value","Product": "example_value",   "Unit": "example_value" }
              create_row_data = { "Inputs": {    "data": [{"Country": 'United States',  "Time": d.strftime("%Y-%m-%d") ,"Balance": "example_value","Product": "example_value",   "Unit": "example_value" }  ]   },   "GlobalParameters": {
             "quantiles": [      0.025,       0.975     ]   } }
-             response = requests.post(url, data=json.dumps(create_row_data), headers= {'Content-type': 'application/json'})
-             print(response)
-             if response:
+             
+            if horizon =='Long Term[Quarterly]' :
+              url = 'http://6256662e-9fce-472b-94db-2f4feb1f56f3.eastasia.azurecontainer.io/score'
+              create_row_data = { "Inputs": {    "data": [{"Country": 'United States',  "Time": d.strftime("%Y-%m-%d") ,"Balance": "example_value","Product": "example_value",   "Unit": "example_value" }  ]   },   "GlobalParameters": {
+            "quantiles": [      0.025,       0.975     ]   } }
+            response = requests.post(url, data=json.dumps(create_row_data), headers= {'Content-type': 'application/json'})
+            #print(response)
+            if response:
                 #st.write(response['forecast'])
                  json_data = json.loads(response.text)
                  text = str(json_data['Results']['forecast'])
-                 st.write(re.sub(r"[\([{})\]]", "", text))
+                 st.write(re.sub(r"[\([{})\]]", "", text  +'   GWh'))
                  #st.write(json_data['Results']['forecast'])
-             else:   
+            else:   
                 st.error("Error")
 
 
